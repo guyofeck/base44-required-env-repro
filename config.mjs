@@ -1,11 +1,23 @@
-export const REQUIRED_ENV_NAME = "REQUIRED_EXTERNAL_API_KEY";
+export const REQUIRED_ENV_NAMES = [
+  "REQUIRED_EXTERNAL_API_KEY",
+  "DATABASE_URL",
+  "EMAIL_PROVIDER_API_KEY",
+  "WEBHOOK_SIGNING_SECRET",
+];
 
 export function readRequiredEnvironment(environment = process.env) {
-  const value = environment[REQUIRED_ENV_NAME];
-  if (typeof value !== "string" || value.trim() === "") {
+  const missingNames = REQUIRED_ENV_NAMES.filter((name) => {
+    const value = environment[name];
+    return typeof value !== "string" || value.trim() === "";
+  });
+
+  if (missingNames.length > 0) {
     throw new Error(
-      `${REQUIRED_ENV_NAME} is required before the backend can start`,
+      `${missingNames.join(", ")} must be present before the backend can start`,
     );
   }
-  return value;
+
+  return Object.fromEntries(
+    REQUIRED_ENV_NAMES.map((name) => [name, environment[name]]),
+  );
 }

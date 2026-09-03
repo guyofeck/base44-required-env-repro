@@ -1,18 +1,19 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { REQUIRED_ENV_NAME, readRequiredEnvironment } from "./config.mjs";
+import { REQUIRED_ENV_NAMES, readRequiredEnvironment } from "./config.mjs";
 
-test("startup fails when the required environment variable is missing", () => {
+test("startup fails when required environment variables are missing", () => {
   assert.throws(
     () => readRequiredEnvironment({}),
-    new RegExp(`${REQUIRED_ENV_NAME} is required`),
+    /REQUIRED_EXTERNAL_API_KEY, DATABASE_URL, EMAIL_PROVIDER_API_KEY, WEBHOOK_SIGNING_SECRET must be present/,
   );
 });
 
-test("any non-empty development placeholder satisfies startup", () => {
-  assert.equal(
-    readRequiredEnvironment({ [REQUIRED_ENV_NAME]: "generated-placeholder" }),
-    "generated-placeholder",
+test("non-empty development placeholders satisfy startup", () => {
+  const placeholders = Object.fromEntries(
+    REQUIRED_ENV_NAMES.map((name) => [name, "generated-placeholder"]),
   );
+
+  assert.deepEqual(readRequiredEnvironment(placeholders), placeholders);
 });

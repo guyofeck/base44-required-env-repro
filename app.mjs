@@ -1,6 +1,6 @@
 import { createServer } from "node:http";
 
-import { REQUIRED_ENV_NAME, readRequiredEnvironment } from "./config.mjs";
+import { REQUIRED_ENV_NAMES, readRequiredEnvironment } from "./config.mjs";
 
 readRequiredEnvironment();
 
@@ -11,7 +11,7 @@ const server = createServer((request, response) => {
     response.end(
       JSON.stringify({
         status: "ok",
-        requiredEnvironmentVariable: "present",
+        requiredEnvironmentVariables: REQUIRED_ENV_NAMES.length,
       }),
     );
     return;
@@ -37,14 +37,16 @@ const server = createServer((request, response) => {
   </head>
   <body>
     <h1>The backend is running</h1>
-    <p><code>${REQUIRED_ENV_NAME}</code> is present.</p>
-    <p>This reproduction app checks only for presence and never displays the value.</p>
+    <p>All <code>${REQUIRED_ENV_NAMES.length}</code> required environment variables are present.</p>
+    <p>This reproduction app checks only for presence and never displays their values.</p>
   </body>
 </html>`);
 });
 
 server.listen(port, "0.0.0.0", () => {
-  console.log(`Reproduction server listening on port ${port}; ${REQUIRED_ENV_NAME} is present`);
+  console.log(
+    `Reproduction server listening on port ${port}; ${REQUIRED_ENV_NAMES.length} required environment variables are present`,
+  );
 });
 
 for (const signal of ["SIGINT", "SIGTERM"]) {
