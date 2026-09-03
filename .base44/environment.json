@@ -1,0 +1,12 @@
+{
+  "previewPort": 3000,
+  "healthPath": "/health",
+  "startCommand": "docker compose -f docker-compose.base44.yml up -d",
+  "secrets": [
+    {
+      "name": "REQUIRED_EXTERNAL_API_KEY",
+      "description": "External-looking value intentionally required at boot for the generated-development-secret reproduction",
+      "requiredAtBoot": true
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+name: base44-required-env-repro
+
+services:
+  app:
+    image: node:22-bookworm-slim
+    working_dir: /workspace
+    command: ["node", "--watch", "app.mjs"]
+    volumes:
+      - .:/workspace
+    env_file:
+      - path: /run/base44/app.env
+        required: false
+    environment:
+      PORT: "3000"
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://localhost:3000/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 12
