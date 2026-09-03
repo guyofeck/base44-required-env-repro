@@ -5,8 +5,27 @@
   "secrets": [
     {
       "name": "REQUIRED_EXTERNAL_API_KEY",
-      "description": "External-looking value intentionally required at boot for the generated-development-secret reproduction",
-      "requiredAtBoot": true
+      "description": "External API key required at boot (placeholder sufficient for this app)",
+      "requiredAtBoot": true,
+      "generatedForDevelopment": true
+    },
+    {
+      "name": "DATABASE_URL",
+      "description": "Database connection URL required at boot (placeholder sufficient for this app)",
+      "requiredAtBoot": true,
+      "generatedForDevelopment": true
+    },
+    {
+      "name": "EMAIL_PROVIDER_API_KEY",
+      "description": "Email provider API key required at boot (placeholder sufficient for this app)",
+      "requiredAtBoot": true,
+      "generatedForDevelopment": true
+    },
+    {
+      "name": "WEBHOOK_SIGNING_SECRET",
+      "description": "Webhook signing secret required at boot (placeholder sufficient for this app)",
+      "requiredAtBoot": true,
+      "generatedForDevelopment": true
     }
   ]
 }
